@@ -28,9 +28,7 @@ class AppNetworkRequest {
     // _dioClient.options.baseUrl = customBaseUrl ?? _baseUrl;
 
     AppHttpResponse response;
-    print(url);
-    print(url);
-    print(url);
+    
     try {
       switch (requestType) {
         case HttpRequestType.get:
@@ -46,8 +44,6 @@ class AppNetworkRequest {
       }
       return response;
     } catch (e) {
-      print('NN error');
-      print(e);
       debugPrint(e.toString());
     }
     return ErrorResponse(
@@ -56,23 +52,17 @@ class AppNetworkRequest {
 
   static Future<AppHttpResponse> _getRequest(String url,
       [Map<String, dynamic>? data]) async {
-    print('Getting:  $url');
     try {
       final response = await _dioClient.get(url, data: data);
       return SuccessResponse(
           result: response.data,
           message: response.statusMessage ?? "Request successful");
     } on DioException catch (e) {
-      print('Dio error');
-      print(e);
       return ErrorResponse(
           message: e.response?.statusMessage ?? "Failed to process request");
     } on SocketException catch (e) {
       return ErrorResponse(result: {}, message: e.message);
-    } catch (e, s) {
-      print('Error');
-      print(e);
-      print(s);
+    } catch (e) {
       return ErrorResponse(result: {}, message: "Failed to process request");
     }
   }
@@ -86,7 +76,6 @@ class AppNetworkRequest {
           : requestType == HttpRequestType.put
               ? await _dioClient.put(url, data: data)
               : await _dioClient.patch(url, data: data);
-      print(response.data);
 
       Map<String, dynamic>? rawJson;
       if (response.data.runtimeType == String) {

@@ -29,7 +29,6 @@ class AppRepository {
 
     if (response is SuccessResponse) {
       return response.withConverter((res) {
-        print(res);
         final country = (res as List)
             .map((e) => SingleCountryModel.fromJson(e))
             .firstOrNull;
